@@ -2,6 +2,12 @@
 
 Bit cliché...
 
-## Screenshot
+## Screenshots
 
-![Packed circles](./OPENRNDR-2019-03-19-23.10.36.png)
+### Without shading
+
+![Packed circles](./OPENRNDR-2019-03-20-09.23.46.png)
+
+### With shading
+
+![Shaded packed circles](./shaded-small.png)
