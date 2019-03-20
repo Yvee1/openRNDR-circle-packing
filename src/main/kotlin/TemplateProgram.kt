@@ -58,10 +58,13 @@ fun main() = application {
                         break
                     }
                 }
-                if(circle.r >= 1)
+                if(circle.r >= 1){
                 circles.add(circle)
+                }
 
             }
+
+            drawer.background(50.0/255.0, 50.0/255.0, 50.0/255.0, 1.0)
 
             for (c in circles){
                 drawer.fill = ColorRGBa.fromHex(c.color)
@@ -94,7 +97,7 @@ class Circle(w : Double, h : Double) {
     val y = Random.nextDouble(h)
     var r = Random.nextDouble(20.0, h/5.0)
 
-    val color = listOf(0xDD6649, 0x7EA172, 0xC7CB85, 0xE7A977, 0xEBBE9B)[Random.nextInt(5)]
+    val color = listOf(0xDD6649, 0x3F577F, 0x93B7BE, 0xBFDBF7, 0x68B684, 0xffffff)[Random.nextInt(6)]
     //val color = listOf(0x502419, 0x7EA172, 0xC7CB85, 0xE7A977, 0xEBBE9B)[Random.nextInt(5)]
 
     fun inside(other: Circle): Boolean {
@@ -102,7 +105,7 @@ class Circle(w : Double, h : Double) {
     }
 
     fun collides(other: Circle): Boolean {
-        return this.dist(other) <= this.r + other.r
+        return this.dist(other) < this.r + other.r
     }
 
     fun dist(other: Circle): Double {
