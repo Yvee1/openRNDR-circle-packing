@@ -4,6 +4,7 @@ import org.openrndr.color.ColorRGBa
 
 import org.openrndr.draw.FontImageMap
 import org.openrndr.draw.loadImage
+import org.openrndr.draw.shadeStyle
 import org.openrndr.draw.tint
 import org.openrndr.extensions.Screenshots
 import org.openrndr.ffmpeg.ScreenRecorder
@@ -13,9 +14,9 @@ import kotlin.random.Random
 
 fun main() = application {
     configure {
-        width = 1920
-        height = 1080
-        fullscreen = Fullscreen.SET_DISPLAY_MODE
+        width = 500
+        height = 500
+        //fullscreen = Fullscreen.SET_DISPLAY_MODE
     }
 
     program {
@@ -25,6 +26,19 @@ fun main() = application {
         var numFrames = 0
         extend(Screenshots())
         extend {
+
+            drawer.shadeStyle = shadeStyle {
+                //fragmentTransform = """
+ //float c = smoothstep(-0.01, 0.01, cos(c_element + p_time + c_boundsPosition.y )) * 0.5 + 0.5;
+ //x_fill.a *= c;
+//                    """.trimMargin()
+//                parameter("time", seconds)
+//            }
+                fragmentTransform = """
+                x_fill.rgb *= 1.0-(length(c_boundsPosition.xy - p_position)*0.25);
+            """
+                parameter("position", mouse.position / window.size)
+            }
 
 
             for (i in 1..100) {
@@ -68,7 +82,7 @@ fun main() = application {
 
             for (c in circles){
                 drawer.fill = ColorRGBa.fromHex(c.color)
-                drawer.stroke = ColorRGBa.fromHex(c.color)
+                //drawer.stroke = ColorRGBa.fromHex(c.color)
                 drawer.circle(c.x, c.y, c.r)
 
             }
@@ -105,7 +119,7 @@ class Circle(w : Double, h : Double) {
     }
 
     fun collides(other: Circle): Boolean {
-        return this.dist(other) < this.r + other.r
+        return this.dist(other) < this.r + other.r-3
     }
 
     fun dist(other: Circle): Double {
