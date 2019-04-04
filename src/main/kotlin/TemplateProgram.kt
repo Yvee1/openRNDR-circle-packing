@@ -14,9 +14,9 @@ import kotlin.random.Random
 
 fun main() = application {
     configure {
-        width = 1920
-        height = 1080
-        fullscreen = Fullscreen.SET_DISPLAY_MODE
+        width = 500
+        height = 500
+        //fullscreen = Fullscreen.SET_DISPLAY_MODE
     }
 
     program {
