@@ -14,15 +14,15 @@ import kotlin.random.Random
 
 fun main() = application {
     configure {
-        width = 500
-        height = 500
-        //fullscreen = Fullscreen.SET_DISPLAY_MODE
+        width = 1920
+        height = 1080
+        fullscreen = Fullscreen.SET_DISPLAY_MODE
     }
 
     program {
 
         var circles = mutableListOf<Circle>()
-
+        val bigRadius : Double = (height.toDouble() - 20.0)/2  // radius of big circle
         var numFrames = 0
         extend(Screenshots())
         extend {
@@ -61,8 +61,13 @@ fun main() = application {
                 }
                 while (true) {
                     var found = true
+                    if (circle.wall(width.toDouble()/2, height.toDouble()/2, bigRadius)) {
+                        circle.r = circle.r - 1
+                        found = false
+
+                    }
                     for (c in circles) {
-                        if (c.collides(circle) || circle.wall(width.toDouble(), height.toDouble())) {
+                        if (c.collides(circle)) {
                             circle.r = circle.r - 1
                             found = false
                             break
@@ -79,9 +84,14 @@ fun main() = application {
             }
 
             drawer.background(50.0/255.0, 50.0/255.0, 50.0/255.0, 1.0)
-
+            //drawer.strokeWeight = 5.0
+            //drawer.stroke = ColorRGBa.WHITE
+            //drawer.fill = null
+            //drawer.circle(width.toDouble()/2.0, height.toDouble()/2, bigRadius)
             for (c in circles){
                 drawer.fill = ColorRGBa.fromHex(c.color)
+                drawer.stroke = null
+                drawer.strokeWeight = 0.0
                 //drawer.stroke = ColorRGBa.fromHex(c.color)
                 drawer.circle(c.x, c.y, c.r)
 
@@ -119,18 +129,22 @@ class Circle(w : Double, h : Double) {
     }
 
     fun collides(other: Circle): Boolean {
-        return this.dist(other) < this.r + other.r-3
+        return this.dist(other) < this.r + other.r-2
     }
 
     fun dist(other: Circle): Double {
         return sqrt((x - other.x).pow(2)+ (y - other.y).pow(2))
     }
 
+    fun dist(ox : Double, oy : Double): Double {
+        return sqrt((x - ox).pow(2)+ (y - oy).pow(2))
+    }
+
 //    fun dist(x_: Double, y_: Double): Double{
 //        return sqrt((x - x_).pow(2)+ (y - y_).pow(2))
 //    }
 
-    fun wall(w: Double, h: Double): Boolean{
-        return x + r > w || x - r < 0 || y + r > h || y - r < 0
+    fun wall(cx: Double, cy: Double, cr : Double): Boolean{
+        return cr - this.dist(cx, cy) < this.r
     }
 }
